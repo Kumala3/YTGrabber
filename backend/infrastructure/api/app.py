@@ -11,7 +11,6 @@ log_level = logging.INFO
 bl.basic_colorized_config(level=log_level)
 log = logging.getLogger(__name__)
 
-# session_pool = create_session_pool(config.db)
 
 @app.post("/api")
 async def webhook_endpoint(request: fastapi.Request):
