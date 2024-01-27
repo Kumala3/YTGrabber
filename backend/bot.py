@@ -94,7 +94,7 @@ async def main():
     bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
     dp = Dispatcher(storage=storage)
 
-    engine = create_engine(config)
+    engine = create_engine(config.db)
     session_pool = create_session_pool(engine)
 
     dp.include_routers(*routers_list)
