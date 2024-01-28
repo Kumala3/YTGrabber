@@ -35,7 +35,7 @@ class User(Base, TimestampMixin, TableNameMixin):
     username: Mapped[Optional[str]] = mapped_column(String(128))
     full_name: Mapped[str] = mapped_column(String(128))
     active: Mapped[bool] = mapped_column(Boolean, server_default=true())
-    language: Mapped[str] = mapped_column(String(10), server_default=text("'en'"))
+    language_code: Mapped[str] = mapped_column(String(10), server_default=text("'en'"))
 
     def __repr__(self):
         return f"<User {self.user_id} {self.username} {self.full_name}>"
