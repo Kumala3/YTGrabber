@@ -24,8 +24,7 @@ def upgrade() -> None:
     sa.Column('user_id', sa.BIGINT(), autoincrement=False, nullable=False),
     sa.Column('username', sa.String(length=128), nullable=True),
     sa.Column('full_name', sa.String(length=128), nullable=False),
-    sa.Column('active', sa.Boolean(), server_default=sa.text('true'), nullable=False),
-    sa.Column('language', sa.String(length=10), server_default=sa.text("'en'"), nullable=False),
+    sa.Column('language_code', sa.String(length=10), server_default=sa.text("'en'"), nullable=False),
     sa.Column('created_at', postgresql.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
     sa.PrimaryKeyConstraint('user_id')
     )
