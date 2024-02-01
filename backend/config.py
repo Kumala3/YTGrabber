@@ -74,7 +74,6 @@ class TgBot:
     token: str
     admin_ids: list[int]
     use_redis: bool
-    web_app_url: str
 
     @staticmethod
     def from_env(env: Env):
@@ -84,10 +83,7 @@ class TgBot:
         token = env.str("BOT_TOKEN")
         admin_ids = list(map(int, env.list("ADMINS")))
         use_redis = env.bool("USE_REDIS")
-        web_app_url = env.str("WEB_APP_URL")
-        return TgBot(
-            token=token, admin_ids=admin_ids, use_redis=use_redis, web_app_url=web_app_url
-        )
+        return TgBot(token=token, admin_ids=admin_ids, use_redis=use_redis)
 
 
 @dataclass
@@ -142,11 +138,27 @@ class Miscellaneous:
 
     Attributes
     ----------
-    other_params : str, optional
-        A string used to hold other various parameters as required (default is None).
+    web_app_url : str
+        The URL of the web application.
+    github_repo_url : str
+        The URL of the GitHub repository.
     """
 
-    other_params: str = None
+    web_app_url: str
+    github_repo_url: str
+
+    @staticmethod
+    def from_env(env: Env):
+        """
+        Creates the Miscellaneous object from environment variables.
+        """
+        web_app_url = env.str("WEB_APP_URL")
+        github_repo_url = env.str("GITHUB_REPO_URL")
+        
+        return Miscellaneous(
+            web_app_url=web_app_url,
+            github_repo_url=github_repo_url,
+        )
 
 
 @dataclass
@@ -191,5 +203,5 @@ def load_config(path: str = None) -> Config:
         tg_bot=TgBot.from_env(env),
         db=DbConfig.from_env(env),
         # redis=RedisConfig.from_env(env),
-        misc=Miscellaneous(),
+        misc=Miscellaneous.from_env(env),
     )
