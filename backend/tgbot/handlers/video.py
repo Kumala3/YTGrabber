@@ -1,3 +1,4 @@
+from logging import config
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from tgbot.keyboards.inline import get_back_keyboard, start_user_keyboard
@@ -19,6 +20,6 @@ async def get_video_link(query: CallbackQuery):
 async def get_back(query: CallbackQuery):
     await query.message.edit_text(
         text=START_TEXT,
-        reply_markup=start_user_keyboard(),
+        reply_markup=start_user_keyboard(config.misc.web_app_url),
         disable_web_page_preview=True,
     )

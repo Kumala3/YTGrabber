@@ -14,7 +14,7 @@ user_router = Router()
 async def user_start(message: Message, config: Config):
     await message.reply(
         text=START_TEXT,
-        reply_markup=start_user_keyboard(),
+        reply_markup=start_user_keyboard(config.misc.web_app_url),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
