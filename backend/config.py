@@ -140,12 +140,12 @@ class Miscellaneous:
     ----------
     web_app_url : str
         The URL of the web application.
-    github_repo_url : str
+    repo_url : str
         The URL of the GitHub repository.
     """
 
     web_app_url: str
-    github_repo_url: str
+    repo_url: str
 
     @staticmethod
     def from_env(env: Env):
@@ -153,11 +153,11 @@ class Miscellaneous:
         Creates the Miscellaneous object from environment variables.
         """
         web_app_url = env.str("WEB_APP_URL")
-        github_repo_url = env.str("GITHUB_REPO_URL")
+        repo_url = env.str("REPO_URL")
         
         return Miscellaneous(
             web_app_url=web_app_url,
-            github_repo_url=github_repo_url,
+            repo_url=repo_url,
         )
 
 
