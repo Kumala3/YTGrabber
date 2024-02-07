@@ -4,7 +4,8 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.enums import ParseMode
 
 from tgbot.keyboards.inline import start_keyboard, back_keyboard, menu_keyboard
-from tgbot.misc.constants import start_text
+from tgbot.misc.constants import start_text, video_info_text
+from infrastructure.pytube.video import Video
 from config import Config
 
 user_router = Router()
@@ -42,6 +43,14 @@ async def get_video_link(query: CallbackQuery):
         text="Enter the link or video_id to the video:",
         reply_markup=back_keyboard("menu"),
     )
+
+
+@user_router.message()
+async def download_video(message: Message):
+    video_url = message.text
+    video = Video(video_url)
+    text = video_info_text(video.get_video_info())
+    await message.answer(text=text)
 
 
 @user_router.callback_query(F.data == "downloaded_videos")
