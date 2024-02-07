@@ -6,3 +6,4 @@ redis
 sqlalchemy
 alembic
 asyncpg
+pytube==15.0.0
