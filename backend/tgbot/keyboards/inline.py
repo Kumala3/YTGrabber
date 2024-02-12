@@ -34,3 +34,27 @@ def menu_keyboard() -> InlineKeyboardMarkup:
     keyboard.adjust(2, 2, 1)
 
     return keyboard.as_markup()
+
+
+def confirm_keyboard() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardBuilder()
+
+    keyboard.button(text="✅ Confirm", callback_data="confirm")
+    keyboard.button(text="❌ Cancel", callback_data="cancel")
+
+    return keyboard.as_markup()
+
+
+def resolutions_keyboard(video_data: list) -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardBuilder()
+
+    for item in video_data:
+        keyboard.button(
+            text=f"✴{item[0]} ➡ {item[1]}mb", callback_data=f"resolution={item[0]}"
+        )
+
+    keyboard.button(text="⬅️ Back", callback_data="get_back_menu")
+    keyboard.adjust(1,1)        
+
+    return keyboard.as_markup()
+

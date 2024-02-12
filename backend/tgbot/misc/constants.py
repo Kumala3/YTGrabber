@@ -1,5 +1,5 @@
 from aiogram.utils.markdown import hlink
-from pytube.exceptions import RegexMatchError
+from datetime import timedelta
 
 
 def start_text(repo_url: str):
@@ -17,15 +17,19 @@ Check out the {repo_url} repo for more details and dive into a world of limitles
 
 
 def video_info_text(data: dict):
-    try:
-        text = f"""
-This is the video are you looking for?:
+    time_delta = timedelta(seconds=data['length'])
+    hours, remainder = divmod(time_delta.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+ 
+    text = f"""
+<b>This is the video are you looking for?</b>
+
+Channel: {hlink(data['channel_url'], url=data['channel_url'])}
 Author: <b>{data['author']}</b>
 Title: <b>{data['title']}</b>
-Length: {data['length']}
+Length: {hours:02}:{minutes:02}:{seconds:02}
 Views: {data['views']}
 Publish Date: {data['publish_date']}
 """
-        return text
-    except RegexMatchError:  # Broadening the catch here for debugging
-        return "Regex Error you are trying to access a private video or another error occurred."
+    return text
+
