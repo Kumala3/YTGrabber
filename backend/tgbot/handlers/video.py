@@ -21,6 +21,7 @@ async def check_video(message: Message, state: FSMContext):
         await state.update_data(video_url=video_url)
     else:
         await message.answer(text=video_info, reply_markup=back_keyboard("menu"))
+        await state.clear()
 
 
 @video_router.callback_query(F.data == "cancel")
@@ -45,6 +46,7 @@ async def confirm_video(query: CallbackQuery, state: FSMContext):
             await state.clear()
         else:
             await query.message.edit_text(text=video_details, reply_markup=back_keyboard("menu"))
+            await state.clear()
     except Exception as e:
         await query.message.edit_text(text=f"An error occurred: {str(e)}")
 
