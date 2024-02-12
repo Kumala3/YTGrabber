@@ -2,10 +2,11 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery
 from aiogram.enums import ParseMode
+from aiogram.fsm.context import FSMContext
 
 from tgbot.keyboards.inline import start_keyboard, back_keyboard, menu_keyboard
-from tgbot.misc.constants import start_text, video_info_text
-from infrastructure.pytube.video import Video
+from tgbot.misc.constants import start_text
+from tgbot.misc.states import VideoUrl
 from config import Config
 
 user_router = Router()
@@ -38,19 +39,19 @@ async def get_profile(query: CallbackQuery):
 
 
 @user_router.callback_query(F.data == "download_video")
-async def get_video_link(query: CallbackQuery):
+async def get_video_link(query: CallbackQuery, state: FSMContext):
     await query.message.edit_text(
         text="Enter the link or video_id to the video:",
         reply_markup=back_keyboard("menu"),
     )
+    await state.set_state(VideoUrl.video_url)
 
 
 @user_router.message()
-async def download_video(message: Message):
-    video_url = message.text
-    video = Video(video_url)
-    text = video_info_text(video.get_video_info())
-    await message.answer(text=text)
+async def undefined_message(message: Message):
+    await message.answer(
+        "I don't understand you, please use the menu to navigate.\nUse /start to open main menu"
+    )
 
 
 @user_router.callback_query(F.data == "downloaded_videos")
