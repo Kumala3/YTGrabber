@@ -12,15 +12,17 @@ video_router = Router()
 
 @video_router.message(VideoUrl.video_url)
 async def check_video(message: Message, state: FSMContext):
+    msg = await message.answer(text="Checking the video ...")
+
     video_url = message.text
     video_info = Video().get_video_info(video_url)
 
     if isinstance(video_info, dict):
         text = video_info_text(video_info)
-        await message.answer(text=text, reply_markup=confirm_keyboard())
+        await msg.edit_text(text=text, reply_markup=confirm_keyboard())
         await state.update_data(video_url=video_url)
     else:
-        await message.answer(text=video_info, reply_markup=back_keyboard("menu"))
+        await msg.edit_text(text=video_info, reply_markup=back_keyboard("menu"))
         await state.clear()
 
 
@@ -34,6 +36,7 @@ async def cancel_video(query: CallbackQuery):
 
 @video_router.callback_query(VideoUrl.video_url, F.data == "confirm")
 async def confirm_video(query: CallbackQuery, state: FSMContext):
+    await query.message.edit_text(text="Please wait...")
     video = await state.get_data()
     video_details = Video().get_video_details(video.get("video_url"))
 
@@ -45,8 +48,9 @@ async def confirm_video(query: CallbackQuery, state: FSMContext):
             )
             await state.clear()
         else:
-            await query.message.edit_text(text=video_details, reply_markup=back_keyboard("menu"))
+            await query.message.edit_text(
+                text=video_details, reply_markup=back_keyboard("menu")
+            )
             await state.clear()
     except Exception as e:
         await query.message.edit_text(text=f"An error occurred: {str(e)}")
-
