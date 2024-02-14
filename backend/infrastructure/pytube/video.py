@@ -1,4 +1,3 @@
-from ast import List
 from pytube import YouTube
 from pytube.exceptions import (
     PytubeError,
@@ -64,3 +63,12 @@ class Video:
                 return "Video is for members only"
             if exception.__class__.__name__ == "VideoRegionBlocked":
                 return "Video is not available in your region"
+
+    def download_video_by_res(self, video_url: str, resolution: str):
+        try:
+            yt = YouTube(video_url)
+            stream = yt.streams.filter(resolution=resolution, file_extension="mp4", adaptive=True).first()
+            path_to_video =  stream.download()
+            return path_to_video.rsplit("/", 1)[0] + "/"
+        except Exception as e:
+            return f"An error occurred: {str(e)}"

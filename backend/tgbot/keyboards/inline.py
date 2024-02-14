@@ -50,7 +50,7 @@ def resolutions_keyboard(video_data: list) -> InlineKeyboardMarkup:
 
     for item in video_data:
         keyboard.button(
-            text=f"✴{item[0]} ➡ {item[1]}mb", callback_data=f"resolution={item[0]}"
+            text=f"✴{item[0]} ➡ {item[1]}mb", callback_data=f"res_{item[0]}"
         )
 
     keyboard.button(text="⬅️ Back", callback_data="get_back_menu")
